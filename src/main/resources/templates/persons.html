@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Persons</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<form action="/person" method="post">
+    <div>
+        <label for="name">Имя</label>
+        <input name="name" id="name">
+    </div>
+
+    <div>
+        <label for="surname"> surname</label>
+        <input name="surname" id="surname">
+    </div>
+    <div>
+        <label for="fathername"> fathername</label>
+        <input name="fathername" id="fathername">
+    </div>
+    <div>
+        <label for="birthday"> birthday</label>
+        <input name="birthday" id="birthday" type="date time-local">
+    </div>
+    <div>
+        <label for="deadday"> deadday</label>
+        <input name="deadday" id="deadday" type="datetime-local">
+    </div>
+    <br>
+    <div>
+        <label for="gender">Select gender:</label><br>
+        <input type="radio" name="gender" value="true" id="gender">Male<br>
+        <input type="radio" name="gender" value="false" checked>Female<br>
+    </div>
+    <button type="submit">Добавить человека</button>
+</form>
+<br><br>
+<table class="table">
+    <thead>
+    <tr>
+        <th> Id</th>
+        <th> Name</th>
+        <th> Surname</th>
+        <th> Fathername</th>
+        <th> Birthday</th>
+        <th> Deadday</th>
+        <th> Edit</th>
+        <th> Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="person : ${persons}">
+        <td><span th:text="${person.id}">Id </span></td>
+        <td><span th:text="${person.name}">Name </span></td>
+        <td><span th:text="${person.surname}">Surname </span></td>
+        <td><span th:text="${person.fathername}">Fathername </span></td>
+        <td><span th:text="${person.birthday}">Birthday </span></td>
+        <td><span th:text="${person.deadDay}">Deadday </span></td>
+        <td><a th:href="${'/person/' + person.id}">Edit person</a></td>
+        <td><a th:href="${'/person/' + person.id + '/delete'}">delete person</a></td>
+    </tr>
+    </tbody>
+</table>
+<div style="text-align: center;">
+    <a href="/">Main page</a>
+</div>
+
+</body>
+</html>

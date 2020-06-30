@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/styles.css"/>
+    <meta charset="UTF-8">
+    <!--<title th:text="${person.name} + ' ' +${person.surname}+ '' + ${person.fathername}"></title>-->
+    <title>Person</title>
+</head>
+<body>
+<span th:text="${person.id}"></span>
+<span th:text="${person.name}"></span>
+<span th:text="${person.surname}"></span>
+<span th:text="${person.fathername}"></span>
+<span th:text="${person.birthday}"></span>
+<span th:text="${person.deadDay}"></span>
+
+<form action="/person" method="post">
+    <input type="hidden" name="id" th:value="${person.id}">
+    <input type="text" name="name" th:value="${person.name}">
+    <input type="text" name="surname" th:value="${person.surname}">
+    <input type="text" name="fathername" th:value="${person.fathername}">
+    <input type="datetime-local" name="birthday" th:value="${person.birthday}">
+    <input type="datetime-local" name="deadDay" th:value="${person.deadDay}">
+
+    <br>
+    <p>Select gender:</p>
+    <input type="radio" name="gender" value="true" th:checked="${person.gender}"> Male<br>
+    <input type="radio" name="gender" value="false" th:checked="${!person.gender}"> Female<br>
+
+    <button type="submit">EDIT</button>
+</form>
+<hr>
+
+<a th:href="'/person/'+${person.getId()}+'/photos'">Photos</a>
+
+<form action="/relation" method="post">
+    <input type="hidden" name="personId" th:value="${person.id}">
+    <select name="relationId">
+        <option th:each="relationPerson : ${persons}"
+                th:value="${relationPerson.id}"
+                th:text="${relationPerson.id}+ ' - ' + ${relationPerson.surname + ' ' + relationPerson.name + ' '  + relationPerson.fathername}">
+        </option>
+    </select>
+
+    <div>
+        <label for="relationType">Relation type:</label><br>
+        <input type="radio" name="relationType" value="1" id="relationType">Marriage<br>
+        <input type="radio" name="relationType" value="0" checked>Parent_Child<br>
+    </div>
+    <button>Add</button>
+</form>
+<hr>
+
+<h2>Husband</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th> Id</th>
+        <th> Name</th>
+        <th> Surname</th>
+        <th> Fathername</th>
+        <th> Birthday</th>
+        <th> Deadday</th>
+        <th> Edit</th>
+        <th> Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="husband : ${husbands}">
+        <td><span th:text="${husband.getId()}">Id </span></td>
+        <td><span th:text="${husband.getName()}">Name </span></td>
+        <td><span th:text="${husband.getSurname()}">Surname </span></td>
+        <td><span th:text="${husband.getFathername()}">Fathername </span></td>
+        <td><span th:text="${husband.getBirthday()}">Birthday </span></td>
+        <td><span th:text="${husband.getDeadDay()}">Deadday </span></td>
+        <td><a th:href="${'/person/' + husband.getId()}">Edit parent</a></td>
+        <td><a th:href="${'/person/' + husband.getId() + '/delete'}">delete husband</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Wife</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th> Id</th>
+        <th> Name</th>
+        <th> Surname</th>
+        <th> Fathername</th>
+        <th> Birthday</th>
+        <th> Deadday</th>
+        <th> Edit</th>
+        <th> Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="wife: ${wives}">
+        <td><span th:text="${wife.getId()}">Id </span></td>
+        <td><span th:text="${wife.getName()}">Name </span></td>
+        <td><span th:text="${wife.getSurname()}">Surname </span></td>
+        <td><span th:text="${wife.getFathername()}">Fathername </span></td>
+        <td><span th:text="${wife.getBirthday()}">Birthday </span></td>
+        <td><span th:text="${wife.getDeadDay()}">Deadday </span></td>
+        <td><a th:href="${'/person/' + wife.getId()}">Edit parent</a></td>
+        <td><a th:href="${'/person/' + wife.getId() + '/delete'}">delete wife</a></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<h2>Parents:</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th> Id</th>
+        <th> Name</th>
+        <th> Surname</th>
+        <th> Fathername</th>
+        <th> Birthday</th>
+        <th> Deadday</th>
+        <th> Edit</th>
+        <th> Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="parent : ${parents}">
+        <td><span th:text="${parent.getId()}">Id </span></td>
+        <td><span th:text="${parent.getName()}">Name </span></td>
+        <td><span th:text="${parent.getSurname()}">Surname </span></td>
+        <td><span th:text="${parent.getFathername()}">Fathername </span></td>
+        <td><span th:text="${parent.getBirthday()}">Birthday </span></td>
+        <td><span th:text="${parent.getDeadDay()}">Deadday </span></td>
+        <td><a th:href="${'/person/' + parent.getId()}">Edit parent</a></td>
+        <td><a th:href="${'/person/' + parent.getId() + '/delete'}">delete parent</a></td>
+    </tr>
+    </tbody>
+</table>
+<h2>Children:</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th> Id</th>
+        <th> Name</th>
+        <th> Surname</th>
+        <th> Fathername</th>
+        <th> Birthday</th>
+        <th> Deadday</th>
+        <th> Edit</th>
+        <th> Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="child : ${children}">
+        <td><span th:text="${child.getId()}">Id </span></td>
+        <td><span th:text="${child.getName()}">Name </span></td>
+        <td><span th:text="${child.getSurname()}">Surname </span></td>
+        <td><span th:text="${child.getFathername()}">Fathername </span></td>
+        <td><span th:text="${child.getBirthday()}">Birthday </span></td>
+        <td><span th:text="${child.getDeadDay()}">Deadday </span></td>
+        <td><a th:href="${'/person/' + child.getId()}">Edit child</a></td>
+        <td><a th:href="${'/person/' + child.getId() + '/delete'}">delete child</a></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<div style="text-align: center;">
+    <a href="/">Main page</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/styles.css"/>
+    <meta charset="UTF-8">
+    <title>Persons Photos</title>
+</head>
+<body>
+<span th:text="${person.id}"></span>
+<span th:text="${person.name}"></span>
+<span th:text="${person.surname}"></span>
+<span th:text="${person.fathername}"></span>
+
+<br>
+
+<a th:href="${'/person/' + person.getId()}">Go to person</a>
+
+<br>
+
+<form action="/person/photos" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="hidden" name="personId" th:value="${person.id}">
+    <textarea name="description"></textarea>
+    <input type="submit" value="Upload Image" name="submit">
+
+</form>
+
+    <div th:each="photo : ${photos}">
+        <span th:text="${photo.photoId}">Id </span>
+        <img th:alt="${person.name}+' photos'" th:src="'/photo/'+${photo.getPhotoId()}" width="300px" />
+        <span th:text="${photo.getDescription()}">Description </span>
+    </div>
+
+
+
+
+
+</body>
+</html>

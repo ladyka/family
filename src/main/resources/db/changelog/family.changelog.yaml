@@ -1,0 +1,159 @@
+databaseChangeLog:
+- changeSet:
+    id: 1593542137095-1
+    author: user (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: photo_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: person_id
+            type: BIGINT
+        tableName: person_has_photos
+- changeSet:
+    id: 1593542137095-2
+    author: user (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: person_relation_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: relation
+            type: INTEGER
+        - column:
+            name: child_id
+            type: BIGINT
+        - column:
+            name: parent_id
+            type: BIGINT
+        tableName: person_relation
+- changeSet:
+    id: 1593542137095-3
+    author: user (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: persons_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: birthday
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: dead_day
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: fathername
+            type: VARCHAR(255)
+        - column:
+            name: gender
+            type: BOOLEAN
+        - column:
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: surname
+            type: VARCHAR(255)
+        tableName: persons
+- changeSet:
+    id: 1593542137095-4
+    author: user (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: photos_pkey
+            name: photo_id
+            type: BIGINT
+        - column:
+            name: description
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: photos
+- changeSet:
+    id: 1593542137095-5
+    author: user (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: person_id
+        baseTableName: person_has_photos
+        constraintName: fkfytwa03tcmwgsf4xpcp8alf05
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: persons
+        validate: true
+- changeSet:
+    id: 1593542137095-6
+    author: user (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: photo_id
+        baseTableName: person_has_photos
+        constraintName: fkiujitdjbi6lt2v45yq141yvlp
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: photo_id
+        referencedTableName: photos
+        validate: true
+- changeSet:
+    id: 1593542137095-7
+    author: user (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: child_id
+        baseTableName: person_relation
+        constraintName: fkfxaai3u4bil8vlcykvxorct2b
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: persons
+        validate: true
+- changeSet:
+    id: 1593542137095-8
+    author: user (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: parent_id
+        baseTableName: person_relation
+        constraintName: fknwym7c22h14vm3pd55bw7ucxl
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: persons
+        validate: true
+
