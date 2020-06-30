@@ -34,11 +34,11 @@ public class PersonRelationService {
                 personRelation.setChild(one);
             }
         } else if (two.getBirthday().compareTo(one.getBirthday()) > 0) {
-            personRelation.setParent(two);
-            personRelation.setChild(one);
-        } else {
             personRelation.setParent(one);
             personRelation.setChild(two);
+        } else {
+            personRelation.setParent(two);
+            personRelation.setChild(one);
         }
         personRelation.setRelation(relation);
         this.personRelationRepository.save(personRelation);
