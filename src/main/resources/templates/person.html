@@ -7,17 +7,16 @@
     <title>Person</title>
 </head>
 <body>
-<span th:text="${person.id}"></span>
-<span th:text="${person.name}"></span>
 <span th:text="${person.surname}"></span>
+<span th:text="${person.name}"></span>
 <span th:text="${person.fathername}"></span>
 <span th:text="${person.birthday}"></span>
 <span th:text="${person.deadDay}"></span>
 
 <form action="/person" method="post">
     <input type="hidden" name="id" th:value="${person.id}">
-    <input type="text" name="name" th:value="${person.name}">
     <input type="text" name="surname" th:value="${person.surname}">
+    <input type="text" name="name" th:value="${person.name}">
     <input type="text" name="fathername" th:value="${person.fathername}">
     <input type="datetime-local" name="birthday" th:value="${person.birthday}">
     <input type="datetime-local" name="deadDay" th:value="${person.deadDay}">
@@ -55,26 +54,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Id</th>
         <th> Name</th>
         <th> Surname</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
         <th> Edit</th>
-        <th> Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="husband : ${husbands}">
-        <td><span th:text="${husband.getId()}">Id </span></td>
         <td><span th:text="${husband.getName()}">Name </span></td>
         <td><span th:text="${husband.getSurname()}">Surname </span></td>
         <td><span th:text="${husband.getFathername()}">Fathername </span></td>
         <td><span th:text="${husband.getBirthday()}">Birthday </span></td>
         <td><span th:text="${husband.getDeadDay()}">Deadday </span></td>
         <td><a th:href="${'/person/' + husband.getId()}">Edit parent</a></td>
-        <td><a th:href="${'/person/' + husband.getId() + '/delete'}">delete husband</a></td>
     </tr>
     </tbody>
 </table>
@@ -83,26 +78,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Id</th>
         <th> Name</th>
         <th> Surname</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
         <th> Edit</th>
-        <th> Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="wife: ${wives}">
-        <td><span th:text="${wife.getId()}">Id </span></td>
         <td><span th:text="${wife.getName()}">Name </span></td>
         <td><span th:text="${wife.getSurname()}">Surname </span></td>
         <td><span th:text="${wife.getFathername()}">Fathername </span></td>
         <td><span th:text="${wife.getBirthday()}">Birthday </span></td>
         <td><span th:text="${wife.getDeadDay()}">Deadday </span></td>
         <td><a th:href="${'/person/' + wife.getId()}">Edit parent</a></td>
-        <td><a th:href="${'/person/' + wife.getId() + '/delete'}">delete wife</a></td>
     </tr>
     </tbody>
 </table>
@@ -112,26 +103,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Id</th>
         <th> Name</th>
         <th> Surname</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
         <th> Edit</th>
-        <th> Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="parent : ${parents}">
-        <td><span th:text="${parent.getId()}">Id </span></td>
         <td><span th:text="${parent.getName()}">Name </span></td>
         <td><span th:text="${parent.getSurname()}">Surname </span></td>
         <td><span th:text="${parent.getFathername()}">Fathername </span></td>
         <td><span th:text="${parent.getBirthday()}">Birthday </span></td>
         <td><span th:text="${parent.getDeadDay()}">Deadday </span></td>
         <td><a th:href="${'/person/' + parent.getId()}">Edit parent</a></td>
-        <td><a th:href="${'/person/' + parent.getId() + '/delete'}">delete parent</a></td>
     </tr>
     </tbody>
 </table>
@@ -139,26 +126,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Id</th>
         <th> Name</th>
         <th> Surname</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
         <th> Edit</th>
-        <th> Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="child : ${children}">
-        <td><span th:text="${child.getId()}">Id </span></td>
         <td><span th:text="${child.getName()}">Name </span></td>
         <td><span th:text="${child.getSurname()}">Surname </span></td>
         <td><span th:text="${child.getFathername()}">Fathername </span></td>
         <td><span th:text="${child.getBirthday()}">Birthday </span></td>
         <td><span th:text="${child.getDeadDay()}">Deadday </span></td>
         <td><a th:href="${'/person/' + child.getId()}">Edit child</a></td>
-        <td><a th:href="${'/person/' + child.getId() + '/delete'}">delete child</a></td>
     </tr>
     </tbody>
 </table>
