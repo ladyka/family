@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +36,9 @@ public class PhotoService {
     public String getPhotoById(Long photoId) {
         Photo photo = this.photoRepository.findById(photoId).orElseThrow(() -> new RuntimeException("Photo was not found"));
         return photo.getName();
+    }
+
+    public List<Photo> getTopPersonPhotos(Long personId, int count) {
+        return photoRepository.findTopByPerson(personId, count);
     }
 }

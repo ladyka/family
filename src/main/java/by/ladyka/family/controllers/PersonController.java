@@ -1,9 +1,11 @@
 package by.ladyka.family.controllers;
 
 import by.ladyka.family.entity.Person;
+import by.ladyka.family.entity.Photo;
 import by.ladyka.family.services.PersonRelationService;
 import by.ladyka.family.entity.RelationType;
 import by.ladyka.family.services.PersonService;
+import by.ladyka.family.services.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class PersonController {
     private final PersonService personService;
     private final PersonRelationService personRelationService;
+    private final PhotoService photoService;
 
     @RequestMapping(value = "/", method = GET)
     public String persons(Model model) {
@@ -62,6 +65,8 @@ public class PersonController {
         List<Person> persons = this.personService.findAll();
         model.addAttribute("persons", persons);
 
+        List<Photo> photos = photoService.getTopPersonPhotos(person.getId(), 7);
+        model.addAttribute("photos", photos);
         return "person";
     }
 
