@@ -55,8 +55,8 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Name</th>
         <th> Surname</th>
+        <th> Name</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
@@ -65,8 +65,8 @@
     </thead>
     <tbody>
     <tr th:each="husband : ${husbands}">
-        <td><span th:text="${husband.getName()}">Name </span></td>
         <td><span th:text="${husband.getSurname()}">Surname </span></td>
+        <td><span th:text="${husband.getName()}">Name </span></td>
         <td><span th:text="${husband.getFathername()}">Fathername </span></td>
         <td><span th:text="${husband.getBirthday()}">Birthday </span></td>
         <td><span th:text="${husband.getDeadDay()}">Deadday </span></td>
@@ -79,8 +79,8 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Name</th>
         <th> Surname</th>
+        <th> Name</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
@@ -89,8 +89,8 @@
     </thead>
     <tbody>
     <tr th:each="wife: ${wives}">
-        <td><span th:text="${wife.getName()}">Name </span></td>
         <td><span th:text="${wife.getSurname()}">Surname </span></td>
+        <td><span th:text="${wife.getName()}">Name </span></td>
         <td><span th:text="${wife.getFathername()}">Fathername </span></td>
         <td><span th:text="${wife.getBirthday()}">Birthday </span></td>
         <td><span th:text="${wife.getDeadDay()}">Deadday </span></td>
@@ -104,8 +104,8 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Name</th>
         <th> Surname</th>
+        <th> Name</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
@@ -114,8 +114,8 @@
     </thead>
     <tbody>
     <tr th:each="parent : ${parents}">
-        <td><span th:text="${parent.getName()}">Name </span></td>
         <td><span th:text="${parent.getSurname()}">Surname </span></td>
+        <td><span th:text="${parent.getName()}">Name </span></td>
         <td><span th:text="${parent.getFathername()}">Fathername </span></td>
         <td><span th:text="${parent.getBirthday()}">Birthday </span></td>
         <td><span th:text="${parent.getDeadDay()}">Deadday </span></td>
@@ -127,8 +127,8 @@
 <table class="table">
     <thead>
     <tr>
-        <th> Name</th>
         <th> Surname</th>
+        <th> Name</th>
         <th> Fathername</th>
         <th> Birthday</th>
         <th> Deadday</th>
@@ -137,8 +137,8 @@
     </thead>
     <tbody>
     <tr th:each="child : ${children}">
-        <td><span th:text="${child.getName()}">Name </span></td>
         <td><span th:text="${child.getSurname()}">Surname </span></td>
+        <td><span th:text="${child.getName()}">Name </span></td>
         <td><span th:text="${child.getFathername()}">Fathername </span></td>
         <td><span th:text="${child.getBirthday()}">Birthday </span></td>
         <td><span th:text="${child.getDeadDay()}">Deadday </span></td>
@@ -152,6 +152,44 @@
     <span th:text="${photo.getDescription()}">Description </span>
 </div>
 
+<h2>Добавить родственника</h2>
+<form action="/person/new" method="post">
+    <input type="hidden" name="personRelationId" th:value="${person.id}">
+    <div>
+        <label for="newRelationType">Relation type:</label><br>
+        <input type="radio" name="relationType" value="1" id="newRelationType">Брак<br>
+        <input type="radio" name="relationType" value="0" checked>Родитель/Ребенок<br>
+    </div>
+
+    <div>
+        <label for="surname">Фамилия</label>
+        <input name="surname" id="surname">
+    </div>
+    <div>
+        <label for="name">Имя</label>
+        <input name="name" id="name">
+    </div>
+    <div>
+        <label for="fathername">Отчество</label>
+        <input name="fathername" id="fathername">
+    </div>
+    <div>
+        <label for="birthday">День рождения</label>
+        <input name="birthday" id="birthday" type="datetime-local">
+    </div>
+    <div>
+        <label for="deadday">День смерти</label>
+        <input name="deadday" id="deadday" type="datetime-local">
+    </div>
+    <br>
+    <div>
+        <label for="gender">Пол:</label><br>
+        <input type="radio" name="gender" value="true" id="gender">Мужский<br>
+        <input type="radio" name="gender" value="false">Женский<br>
+    </div>
+    <button type="submit">Добавить человека</button>
+</form>
+<br><br>
 
 <div style="text-align: center;">
     <a href="/">Main page</a>

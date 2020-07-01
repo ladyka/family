@@ -2,8 +2,8 @@ package by.ladyka.family.controllers;
 
 import by.ladyka.family.entity.Person;
 import by.ladyka.family.entity.Photo;
-import by.ladyka.family.services.PersonRelationService;
 import by.ladyka.family.entity.RelationType;
+import by.ladyka.family.services.PersonRelationService;
 import by.ladyka.family.services.PersonService;
 import by.ladyka.family.services.PhotoService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,11 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/person", method = POST)
-    public String createOrUpdate(Long id, String name, String surname, String fathername, boolean gender,
+    public String createOrUpdate(Long id,
+                                 String name,
+                                 String surname,
+                                 String fathername,
+                                 boolean gender,
                                  String birthday,
                                  String deadDay,
                                  Model model) {
@@ -43,7 +47,27 @@ public class PersonController {
         if (!StringUtils.isEmpty(deadDay)) {
             deadday = LocalDateTime.parse(deadDay);
         }
-        Person person = this.personService.createOrUpdate(id, name, surname, fathername ,LocalDateTime.parse(birthday), deadday, gender);
+        Person person = this.personService.createOrUpdate(id, name, surname, fathername, LocalDateTime.parse(birthday), deadday, gender);
+        return getById(person.getId(), model);
+    }
+
+    @RequestMapping(value = "/person/new", method = POST)
+    public String create(Long id,
+                         String name,
+                         String surname,
+                         String fathername,
+                         boolean gender,
+                         String birthday,
+                         String deadDay,
+                         int relationType,
+                         Long personRelationId,
+                         Model model) {
+        LocalDateTime deadday = null;
+        if (!StringUtils.isEmpty(deadDay)) {
+            deadday = LocalDateTime.parse(deadDay);
+        }
+        Person person = this.personService.createOrUpdate(id, name, surname, fathername, LocalDateTime.parse(birthday), deadday, gender);
+        this.personRelationService.createRelation(personRelationId, person.getId(), RelationType.of(relationType));
         return getById(person.getId(), model);
     }
 
@@ -78,18 +102,20 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/relation", method = POST)
-    public String getParents(Long personId, Long relationId, int relationType, Model model) {
+    public String createRelation(Long personId, Long relationId, int relationType, Model model) {
         this.personRelationService.createRelation(personId, relationId, RelationType.of(relationType));
         return getById(personId, model);
     }
 
     @RequestMapping(method = GET)
-    public @ResponseBody String g404() {
+    public @ResponseBody
+    String g404() {
         return "404 not found. GET";
     }
 
     @RequestMapping(method = POST)
-    public @ResponseBody String p404() {
+    public @ResponseBody
+    String p404() {
         return "404 not found. POST";
     }
 
