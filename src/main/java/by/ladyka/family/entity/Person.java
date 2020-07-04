@@ -21,7 +21,7 @@ public class Person {
     private String fathername;
     @Column(nullable = false)
     private LocalDateTime birthday;
-    @Column(name = "dead_day", nullable = true)
+    @Column(name = "dead_day")
     private LocalDateTime deadDay;
 
     private Boolean gender;
