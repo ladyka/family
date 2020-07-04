@@ -84,9 +84,11 @@ public class PersonController {
 
         List<Person> brothersAndSisters = parents
                 .stream()
-                .map(Person::getRelationsChild)
+                .map(Person::getRelationsParent)
                 .flatMap(personRelations -> personRelations.stream().map(PersonRelation::getChild))
                 .collect(Collectors.toList());
+
+        brothersAndSisters.remove(person);
 
         model.addAttribute("person", person);
         model.addAttribute("parents", parents);
@@ -94,6 +96,8 @@ public class PersonController {
         model.addAttribute("husbands", husbands);
         model.addAttribute("wives", wives);
         model.addAttribute("brothersAndSisters", brothersAndSisters);
+
+        model.addAttribute("persons", this.personService.findAll());
 
         List<Photo> photos = photoService.getTopPersonPhotos(person.getId(), 7);
         model.addAttribute("photos", photos);
