@@ -1,6 +1,7 @@
 package by.ladyka.family.controllers;
 
 import by.ladyka.family.entity.Person;
+import by.ladyka.family.entity.PersonRelation;
 import by.ladyka.family.entity.Photo;
 import by.ladyka.family.entity.RelationType;
 import by.ladyka.family.services.PersonRelationService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -80,14 +82,18 @@ public class PersonController {
         List<Person> parents = this.personRelationService.parentRelations(person.getId());
         List<Person> children = this.personRelationService.childRelation(person.getId());
 
+        List<Person> brothersAndSisters = parents
+                .stream()
+                .map(Person::getRelationsChild)
+                .flatMap(personRelations -> personRelations.stream().map(PersonRelation::getChild))
+                .collect(Collectors.toList());
+
         model.addAttribute("person", person);
         model.addAttribute("parents", parents);
         model.addAttribute("children", children);
         model.addAttribute("husbands", husbands);
         model.addAttribute("wives", wives);
-
-        List<Person> persons = this.personService.findAll();
-        model.addAttribute("persons", persons);
+        model.addAttribute("brothersAndSisters", brothersAndSisters);
 
         List<Photo> photos = photoService.getTopPersonPhotos(person.getId(), 7);
         model.addAttribute("photos", photos);

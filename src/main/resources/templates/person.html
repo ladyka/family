@@ -146,6 +146,33 @@
     </tr>
     </tbody>
 </table>
+
+
+
+<h2>Братья и сестры:</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th> Surname</th>
+        <th> Name</th>
+        <th> Fathername</th>
+        <th> Birthday</th>
+        <th> Deadday</th>
+        <th> Edit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="brotherOrSister : ${brothersAndSisters}">
+        <td><span th:text="${brotherOrSister.getSurname()}">Surname </span></td>
+        <td><span th:text="${brotherOrSister.getName()}">Name </span></td>
+        <td><span th:text="${brotherOrSister.getFathername()}">Fathername </span></td>
+        <td><span th:text="${brotherOrSister.getBirthday()}">Birthday </span></td>
+        <td><span th:text="${brotherOrSister.getDeadDay()}">Deadday </span></td>
+        <td><a th:href="${'/person/' + brotherOrSister.getId()}">Edit brother or Sister</a></td>
+    </tr>
+    </tbody>
+</table>
+
 <div th:each="photo : ${photos}">
     <span th:text="${photo.photoId}">Id </span>
     <img th:alt="${person.name}+' photos'" th:src="'/photo/'+${photo.getPhotoId()}" width="300px"/>
