@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -79,6 +80,6 @@ public class PersonRelationService {
             Person child = c.getParent();
             childPersons.add(child);
         }
-        return childPersons;
+        return Collections.unmodifiableList(childPersons);
     }
 }

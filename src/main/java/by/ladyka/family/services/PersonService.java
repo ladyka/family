@@ -5,6 +5,7 @@ import by.ladyka.family.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,6 +41,13 @@ public class PersonService {
 
     public Person findById(Long id) {
         return this.personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person was not found"));
+    }
+    public Person findByIdOrUsername(Long personId, String username) {
+        return personRepository
+                .findById(personId)
+                .orElseGet(() -> personRepository
+                        .findFirstByUsername(username)
+                        .orElseThrow(EntityNotFoundException::new));
     }
 
     public void delete(Long id) {

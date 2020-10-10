@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -18,6 +20,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @Profile("!test")
 @RequiredArgsConstructor
 public class WebConfiguration extends WebSecurityConfigurerAdapter {
+    private final DataSource dataSource;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -46,8 +50,8 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("andrei")
-                .password("{noop}pass")
+                .withUser("user")
+                .password("{noop}password")
                 .roles("user");
     }
 }

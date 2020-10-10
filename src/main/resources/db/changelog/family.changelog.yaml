@@ -157,3 +157,92 @@ databaseChangeLog:
         referencedTableName: persons
         validate: true
 
+- changeSet:
+    id: 2020-09-16-person-login-data
+    author: Andrei Ladyka
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: username
+            type: VARCHAR(255)
+        tableName: persons
+
+#- changeSet:
+#    id: 2020-09-18-users
+#    author: Andrei Ladyka
+#    changes:
+#    - createTable:
+#        columns:
+#        - column:
+#            constraints:
+#              nullable: false
+#              primaryKey: true
+#              primaryKeyName: users_pkey
+#            name: person_id
+#            type: BIGINT
+#        - column:
+#            constraints:
+#              nullable: false
+#            name: username
+#            type: VARCHAR(255)
+#        - column:
+#            constraints:
+#              nullable: false
+#            name: password
+#            type: VARCHAR(255)
+#        - column:
+#            constraints:
+#              nullable: false
+#            name: enabled
+#            type: BOOLEAN
+#        tableName: users
+#
+#- changeSet:
+#    id: 2020-09-18-authorities
+#    author: Andrei Ladyka
+#    changes:
+#    - createTable:
+#        columns:
+#        - column:
+#            autoIncrement: true
+#            constraints:
+#              nullable: false
+#              primaryKey: true
+#              primaryKeyName: authorities_pkey
+#            name: authority_id
+#            type: BIGINT
+#        - column:
+#            name: username
+#            type: VARCHAR(255)
+#        - column:
+#            name: authority
+#            type: VARCHAR(255)
+#       tableName: authorities
+
+#- changeSet:
+#    id: 2020-09-18-persistent_logins
+#    author: Andrei Ladyka
+#    changes:
+#    - createTable:
+#        columns:
+#        - column:
+#            constraints:
+#              nullable: false
+#            name: username
+#            type: VARCHAR(255)
+#        - column:
+#            constraints:
+#              nullable: false
+#              primaryKey: true
+#            name: series
+#            type: VARCHAR(64)
+#        - column:
+#            constraints:
+#              nullable: false
+#            name: token
+#            type: VARCHAR(64)
+#        - column:
+#            name: last_used
+#            type: timestamp
+#        tableName: persistent_logins

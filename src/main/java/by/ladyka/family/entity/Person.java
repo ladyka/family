@@ -3,7 +3,14 @@ package by.ladyka.family.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,7 @@ public class Person {
     private Boolean gender;
     // man -> true; female -> false
 
+    private String username;
 
     @OneToMany(mappedBy = "parent")
     private List<PersonRelation> relationsParent = new ArrayList<>();
@@ -35,6 +43,4 @@ public class Person {
 
     @ManyToMany(mappedBy = "persons")
     private List<Photo> photos = new ArrayList<>();
-
-
 }
