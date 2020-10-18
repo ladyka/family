@@ -49,6 +49,6 @@ public class Person {
     }
 
     public boolean isWoman() {
-        return gender;
+        return !gender;
     }
 }
