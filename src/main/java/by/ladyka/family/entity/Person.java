@@ -43,4 +43,12 @@ public class Person {
 
     @ManyToMany(mappedBy = "persons")
     private List<Photo> photos = new ArrayList<>();
+
+    public boolean isMan() {
+        return gender;
+    }
+
+    public boolean isWoman() {
+        return gender;
+    }
 }

@@ -10,12 +10,8 @@ import java.util.List;
 @Setter
 public class PersonPage {
     PersonDto person = new PersonDto();
-    PersonDto father = new PersonDto();
-    PersonDto mother = new PersonDto();
-    PersonDto motherGrandMother = new PersonDto();
-    PersonDto motherGrandFather = new PersonDto();
-    PersonDto fatherGrandMother = new PersonDto();
-    PersonDto fatherGrandFather = new PersonDto();
+    PersonParentDto father = new PersonParentDto();
+    PersonParentDto mother = new PersonParentDto();
     List<PersonDto> brothersAndSisters = new ArrayList<>();
     List<PartnerAndChildren> partnerAndChildren = new ArrayList<>();
 }
