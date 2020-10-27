@@ -18,13 +18,14 @@ public class PersonDto {
     private String name;
     private String surname;
     private String fathername;
+    private String role;
     private LocalDateTime birthday;
     private LocalDateTime deadDay;
     private Boolean gender;
     // man -> true; female -> false
     private List<Photo> photos = new ArrayList<>();
 
-    public PersonDto(Person p) {
+    public PersonDto(Person p, FamilyRole familyRole) {
         id = p.getId();
         name = p.getName();
         surname = p.getSurname();
@@ -33,5 +34,6 @@ public class PersonDto {
         deadDay = p.getDeadDay();
         gender = p.getGender();
         photos = p.getPhotos();
+        role = familyRole.getTitle(p.getGender());
     }
 }

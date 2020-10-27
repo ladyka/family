@@ -12,7 +12,7 @@ public class PersonParentDto extends PersonDto {
     PersonDto father = new PersonDto();
     PersonDto mother = new PersonDto();
 
-    public PersonParentDto(Person p) {
-        super(p);
+    public PersonParentDto(Person p, FamilyRole familyRole) {
+        super(p, familyRole);
     }
 }
