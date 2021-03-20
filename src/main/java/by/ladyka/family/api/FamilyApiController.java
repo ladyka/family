@@ -7,6 +7,7 @@ import by.ladyka.family.dto.PersonPage;
 import by.ladyka.family.dto.PersonParentDto;
 import by.ladyka.family.entity.Person;
 import by.ladyka.family.entity.PersonRelation;
+import by.ladyka.family.entity.RelationType;
 import by.ladyka.family.services.PersonRelationService;
 import by.ladyka.family.services.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -50,11 +52,14 @@ public class FamilyApiController {
                 .map(this::getPersonParentDto)
                 .ifPresent(personPage::setMother);
 
-        List<Person> brothersAndSisters = parents
+        Set<Person> brothersAndSisters = parents
                 .stream()
                 .map(Person::getRelationsParent)
-                .flatMap(personRelations -> personRelations.stream().map(PersonRelation::getChild))
-                .collect(Collectors.toList());
+                .flatMap(personRelations -> personRelations
+                        .stream()
+                        .filter(personRelation -> RelationType.PARENT_CHILD.equals(personRelation.getRelation()))
+                        .map(PersonRelation::getChild))
+                .collect(Collectors.toSet());
 
         brothersAndSisters.remove(person);
         personPage.setBrothersAndSisters(brothersAndSisters

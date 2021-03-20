@@ -27,21 +27,14 @@ public class PersonService {
         return this.personRepository.save(person);
     }
 
-    public Person update(Person person) {
-        return this.personRepository.save(person);
-    }
-
-    public Person findByFIO(String name, String surname, String fathername) {
-        return this.personRepository.findByNameAndSurnameAndFathername(name, surname, fathername);
-    }
-
     public List<Person> findAll() {
         return this.personRepository.findAll();
     }
 
     public Person findById(Long id) {
-        return this.personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person was not found"));
+        return this.personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person " + id + " was not found"));
     }
+
     public Person findByIdOrUsername(Long personId, String username) {
         return personRepository
                 .findById(personId)
@@ -53,6 +46,5 @@ public class PersonService {
     public void delete(Long id) {
         Person person = this.personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person was not found"));
         this.personRepository.delete(person);
-
     }
 }
