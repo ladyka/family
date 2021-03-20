@@ -247,3 +247,23 @@ databaseChangeLog:
             name: last_used
             type: timestamp
         tableName: persistent_logins
+
+- changeSet:
+    id: 2021-03-20-person-email-phone
+    author: Andrei Ladyka
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            name: phone
+            type: VARCHAR(255)
+        - column:
+            name: wikilink
+            type: VARCHAR(255)
+        - column:
+            name: description
+            type: TEXT
+        tableName: persons

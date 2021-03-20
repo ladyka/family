@@ -32,8 +32,10 @@ public class Person {
     @Column(name = "dead_day")
     private LocalDateTime deadDay;
 
-    private Boolean gender;
-    // man -> true; female -> false
+    private Boolean gender; // man -> true; female -> false
+    private String email;
+    private String phone;
+    private String wikilink;
 
     private String username;
 
