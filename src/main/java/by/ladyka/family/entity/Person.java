@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -31,8 +32,10 @@ public class Person {
     @Column(name = "dead_day")
     private LocalDateTime deadDay;
 
-    private Boolean gender;
-    // man -> true; female -> false
+    private Boolean gender; // man -> true; female -> false
+    private String email;
+    private String phone;
+    private String wikilink;
 
     private String username;
 
@@ -50,5 +53,25 @@ public class Person {
 
     public boolean isWoman() {
         return !gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id.equals(person.id)
+                && Objects.equals(name, person.name)
+                && Objects.equals(surname, person.surname)
+                && Objects.equals(fathername, person.fathername)
+                && Objects.equals(birthday, person.birthday)
+                && Objects.equals(deadDay, person.deadDay)
+                && Objects.equals(gender, person.gender)
+                && Objects.equals(username, person.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, fathername, birthday, deadDay, gender, username);
     }
 }

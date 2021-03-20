@@ -18,7 +18,8 @@ public class Photo {
     @Column(name="photo_id")
     private Long photoId;
     private String description;
-    private String name; // path to reference
+    @Column(name = "source")
+    private String source;
 
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

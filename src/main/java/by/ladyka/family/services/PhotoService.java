@@ -27,15 +27,17 @@ public class PhotoService {
         os.close();
 
         Photo photo = new Photo();
-        photo.setName(filePhoto.getAbsolutePath());
+        photo.setSource(filePhoto.getAbsolutePath());
         photo.setDescription(description);
         photo.setPersons(Collections.singletonList(this.personService.findById(personId)));
         this.photoRepository.save(photo);
     }
 
     public String getPhotoById(Long photoId) {
-        Photo photo = this.photoRepository.findById(photoId).orElseThrow(() -> new RuntimeException("Photo was not found"));
-        return photo.getName();
+        return this.photoRepository
+                .findById(photoId)
+                .map(Photo::getSource)
+                .orElseThrow(() -> new RuntimeException("Photo was not found"));
     }
 
     public List<Photo> getTopPersonPhotos(Long personId, int count) {

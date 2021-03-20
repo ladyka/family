@@ -5,10 +5,9 @@ import by.ladyka.family.entity.Photo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -21,9 +20,11 @@ public class PersonDto {
     private String role;
     private LocalDateTime birthday;
     private LocalDateTime deadDay;
-    private Boolean gender;
-    // man -> true; female -> false
-    private List<Photo> photos = new ArrayList<>();
+    private Boolean gender; // man -> true; female -> false
+    private String email;
+    private String phone;
+    private String wikilink;
+    Photo photo = new Photo();
 
     public PersonDto(Person p, FamilyRole familyRole) {
         id = p.getId();
@@ -33,7 +34,12 @@ public class PersonDto {
         birthday = p.getBirthday();
         deadDay = p.getDeadDay();
         gender = p.getGender();
-        photos = p.getPhotos();
+        email = p.getEmail();
+        phone = p.getPhone();
+        wikilink = p.getWikilink();
+        if (!CollectionUtils.isEmpty(p.getPhotos())) {
+            photo = p.getPhotos().get(0);
+        }
         role = familyRole.getTitle(p.getGender());
     }
 }
