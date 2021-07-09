@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: ${FAMILY_DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${FAMILY_DB_USERNAME}
+    password: ${FAMILY_DB_USERNAME}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation:trueache=false
+
+  thymeleaf:
+    cache: false
+
+ladyka:
+  family:
+    datadir: /tmp
