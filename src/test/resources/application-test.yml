@@ -1,7 +1,10 @@
 spring:
   datasource:
     database: familytest
-    url: jdbc:postgresql://localhost:5432/${spring.datasource.database}?characterEncoding=UTF-8&autoReconnect=true&useSSL=false&useUnicode=true
+    url: jdbc:h2:mem:${spring.datasource.database};MODE=PostgreSQL
+    driverClassName: org.h2.Driver
+    username: user
+    password: password
   liquibase:
     change-log: classpath:/db/db.changelog-test.yaml
 
