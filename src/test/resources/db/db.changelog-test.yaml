@@ -1,0 +1,7 @@
+databaseChangeLog:
+- property:
+    name: uuid
+    value: uuid()
+- include:
+    file: db/changelog/family.changelog.yaml
+

@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    database: familytest
+    url: jdbc:postgresql://localhost:5432/${spring.datasource.database}?characterEncoding=UTF-8&autoReconnect=true&useSSL=false&useUnicode=true
+  liquibase:
+    change-log: classpath:/db/db.changelog-test.yaml
+
+enable-tables-check: true
