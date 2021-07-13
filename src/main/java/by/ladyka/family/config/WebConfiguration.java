@@ -32,6 +32,7 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/singup123").permitAll()
+                .antMatchers("/hello").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
