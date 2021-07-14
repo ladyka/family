@@ -9,11 +9,10 @@ class Authorities {
     AuthorityRepository authorityRepository
 
     Bundle<Authority, String> create(Map properties = [:]) {
-        assert properties.id != null
         assert properties.birthday != null
         def bundle = new Bundle<Authority, String>(authorityRepository)
         bundle.entity = authorityRepository.saveAndFlush(new Authority(
-                name: properties.name,
+                username: properties.username,
                 authority: properties.authority ?: "defaultAuthority",
 
         ))

@@ -11,9 +11,8 @@ class Persons {
     PersonRepository personRepository
 
     Bundle<Person, Long> create(Map properties = [:]) {
-        assert properties.birthday != null
         def bundle = new Bundle<Person, Long>(personRepository)
-        bundle.entity = personRepository.saveAndFlush(new Persons(
+        bundle.entity = personRepository.saveAndFlush(new Person(
                 name: properties.name ?: "default name",
                 surname: properties.surname ?: "default surname",
                 fathername: properties.fathername ?: "default fathername",
@@ -21,7 +20,8 @@ class Persons {
                 gender: properties.gender,
                 email: properties.email ?: "defaulemail@email.gom",
                 phone: properties.phone ?: "+123456789",
-                username: properties.country ?: "defaultUsername",
+                wikilink: properties.wikilink ?: "/wikilink",
+                username: properties.username ?: "defaultUsername",
         ))
         bundle
     }
