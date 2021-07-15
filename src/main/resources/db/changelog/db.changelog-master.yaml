@@ -1,3 +1,6 @@
 databaseChangeLog:
-  - include:
-      file: db/changelog/family.changelog.yaml
+- property:
+    name: uuid
+    value: md5(random()::text || clock_timestamp()::text)::uuid
+- include:
+    file: db/changelog/family.changelog.yaml

@@ -10,7 +10,7 @@ class Users {
     UserDataRepository dataRepository
 
     Bundle<UserData, Long> create(Map properties = [:]) {
-        assert properties.id != null
+
         def bundle = new Bundle<UserData, Long>(dataRepository)
         bundle.entity = dataRepository.saveAndFlush(new UserData(
                 username: properties.username,

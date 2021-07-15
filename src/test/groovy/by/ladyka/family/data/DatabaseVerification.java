@@ -17,14 +17,15 @@ public class DatabaseVerification {
     @PersistenceContext
     private EntityManager em;
 
-    public List<String> findTableNames() {
+    public List<Object> findTableNames() {
         return em.createNativeQuery("SHOW TABLES")
                 .getResultList();
     }
 
-    public Map<String, Long> getRowCounts(List<String> tableNames) {
+    public Map<String, Long> getRowCounts(List<Object> tableNames) {
         return tableNames.stream()
-                .map(tableName -> String.format("SELECT count(*), \"%s\" from %s", tableName, tableName))
+                .map(objects -> ((Object[]) objects)[0])
+                .map(tableName -> String.format("SELECT count(*), '%s' from %s", tableName, tableName))
                 .map(sqlString -> em.createNativeQuery(sqlString))
                 .map(Query::getSingleResult)
                 .map(a -> (Object[]) a)

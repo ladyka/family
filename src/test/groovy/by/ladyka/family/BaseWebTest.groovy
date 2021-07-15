@@ -2,6 +2,7 @@ package by.ladyka.family
 
 import by.ladyka.family.data.Bundle
 import by.ladyka.family.data.DatabaseVerification
+import by.ladyka.family.security.RandomizedOrder
 import by.ladyka.family.security.WebSecurityConfigTest
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +17,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-//@RandomizedOrder
+@RandomizedOrder
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")

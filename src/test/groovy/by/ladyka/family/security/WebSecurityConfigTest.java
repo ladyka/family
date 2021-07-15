@@ -35,6 +35,7 @@ public class WebSecurityConfigTest extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
+                .antMatchers("/hello").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
