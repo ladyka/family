@@ -4,4 +4,6 @@ databaseChangeLog:
     value: uuid()
 - include:
     file: db/changelog/family.changelog.yaml
+- include:
+    file: db/testUsers.yaml
 

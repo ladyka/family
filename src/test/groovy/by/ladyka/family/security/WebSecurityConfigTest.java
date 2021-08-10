@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 )
 @Profile("test")
 public class WebSecurityConfigTest extends WebSecurityConfigurerAdapter {
-    public static final String TEST_USER_EMAIL = "user.test@republic-club.by";
+    public static final String TEST_USER_EMAIL = "user.family_test@email.by";
     public static final String TEST_USER_ID = "test.userid";
     public static final String TEST_PASSWORD_DB = "BCryptPasswordEncoder";
     public static final String TEST_PASSWORD_RAW = "BCryptPasswordEncoder";
