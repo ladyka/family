@@ -16,7 +16,6 @@ class PersonRelations {
     Persons persons
 
     Bundle<PersonRelation, Long> create(Map properties = [:]) {
-        assert properties.relation != null
         def bundle = new Bundle<PersonRelation, Long>(personRelationRepository)
         bundle.entity = personRelationRepository.saveAndFlush(new PersonRelation(
                 parent: properties.parent ?: bundle.appendAndGet(persons.create(name: "defParent")),
@@ -29,7 +28,7 @@ class PersonRelations {
     Bundle<PersonRelation, Long> createCoupleHusbandAndWife(Map properties = [:]) {
         def bundle = new Bundle<PersonRelation, Long>(personRelationRepository)
         bundle.entity = personRelationRepository.saveAndFlush(new PersonRelation(
-                parent: properties.parent ?: bundle.appendAndGet(persons.create(name: "Husband", gender: true)),
+                parent: properties.parent ?: bundle.appendAndGet(persons.create(name: "Husband")),
                 child: properties.child ?: bundle.appendAndGet(persons.create(name: "Wife", gender: false)),
                 relation: RelationType.MARRIAGE
         ))
