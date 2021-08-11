@@ -45,11 +45,11 @@ class FamilyApiControllerTest extends BaseWebTest {
         father.surname == parents.entity.parent.surname
         father.fathername == parents.entity.parent.fathername
 
-//        def mother = responseEntity.body.mother
-//        mother.id == parents.entity.child.id
-//        mother.name == parents.entity.child.name
-//        mother.surname == parents.entity.child.surname
-//        mother.fathername == parents.entity.child.fathername
+        def mother = responseEntity.body.mother
+        mother.id == parents.entity.child.id
+        mother.name == parents.entity.child.name
+        mother.surname == parents.entity.child.surname
+        mother.fathername == parents.entity.child.fathername
 
         cleanup:
         delete motherAndChild
