@@ -18,7 +18,6 @@ class FamilyApiControllerTest extends BaseWebTest {
         given:
         def parents = personRelations.createCoupleHusbandAndWife()
 
-
         def man = persons.create(name: "Man")
         def secondWife = persons.create(name: "Wife2", gender: false)
         def relationManWithSecondWife = personRelations.createCoupleHusbandAndWife(
