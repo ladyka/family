@@ -61,17 +61,17 @@ class FamilyApiControllerTest extends BaseWebTest {
         def relationFirstDaughter4ManAndHerMather = personRelations.create(
                 parent: relationFirstWifeAndHerNewHusband.entity.child, child: childFromFirstWife.entity)
 
-        def newHusbandsSun = persons.create(name: "Ashot",
-                fathername: relationFirstWifeAndHerNewHusband.entity.parent.name + "vish",
-                surname: relationFirstWifeAndHerNewHusband.entity.parent.surname)
-
-        def relationSunFistWifeAndHisFather = personRelations.create(
-                parent: relationFirstWifeAndHerNewHusband.entity.parent,
-                child: newHusbandsSun.entity)
-
-        def relationSunFistWifeAndHer = personRelations.create(
-                parent: relationFirstWifeAndHerNewHusband.entity.child,
-                child: newHusbandsSun.entity)
+//        def newHusbandsSun = persons.create(name: "Ashot",
+//                fathername: relationFirstWifeAndHerNewHusband.entity.parent.name + "vish",
+//                surname: relationFirstWifeAndHerNewHusband.entity.parent.surname)
+//
+//        def relationSunFistWifeAndHisFather = personRelations.create(
+//                parent: relationFirstWifeAndHerNewHusband.entity.parent,
+//                child: newHusbandsSun.entity)
+//
+//        def relationSunFistWifeAndHer = personRelations.create(
+//                parent: relationFirstWifeAndHerNewHusband.entity.child,
+//                child: newHusbandsSun.entity)
 
         when:
         def responseEntity = testRestUser.getForEntity("/api/person/$man.entity.id", PersonPage)
@@ -113,9 +113,9 @@ class FamilyApiControllerTest extends BaseWebTest {
         partnerAndChildren.get(1).children.get(0).id == childFromFirstWife.entity.id
 
         cleanup:
-        delete relationSunFistWifeAndHer
-        delete relationSunFistWifeAndHisFather
-        delete newHusbandsSun
+//        delete relationSunFistWifeAndHer
+//        delete relationSunFistWifeAndHisFather
+//        delete newHusbandsSun
         delete relationFirstDaughter4ManAndHerMather
         delete relationFirstDaughter4Man
         delete childFromFirstWife
