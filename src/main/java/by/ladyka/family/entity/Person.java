@@ -20,7 +20,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "persons")
-public class Person {
+public class Person implements BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

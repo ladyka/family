@@ -1,0 +1,34 @@
+databaseChangeLog:
+- changeSet:
+    id: 2021-08-10-insert-user-into-table-users
+    author: Eugene Kulik
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: person_id
+            value: 1
+        - column:
+            name: username
+            value: "user.family_test@email.by"
+        - column:
+            name: password
+            value: "BCryptPasswordEncoder"
+        - column:
+            name: enabled
+            valueBoolean: "true"
+        tableName: users
+
+- changeSet:
+    id: 2021-09-10-insert-user-into-table-authorities
+    author: Eugene Kulik
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: username
+            value: "user.family_test@email.by"
+        - column:
+            name: authority
+            value: "USER"
+        tableName: authorities

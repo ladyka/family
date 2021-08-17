@@ -1,6 +1,9 @@
 databaseChangeLog:
 - property:
     name: uuid
-    value: md5(random()::text || clock_timestamp()::text)::uuid
+    value: uuid()
 - include:
     file: db/changelog/family.changelog.yaml
+- include:
+    file: db/testUsers.yaml
+

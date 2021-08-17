@@ -1,7 +1,6 @@
-package by.ladyka.family.config;
+package by.ladyka.family.security;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
@@ -20,10 +18,16 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(
         prePostEnabled = true
 )
-@Profile("!test")
-@RequiredArgsConstructor
-public class WebConfiguration extends WebSecurityConfigurerAdapter {
-    private final DataSource dataSource;
+@Profile("test")
+public class WebSecurityConfigTest extends WebSecurityConfigurerAdapter {
+    public static final String TEST_USER_EMAIL = "user.family_test@email.by";
+    public static final String TEST_USER_ID = "test.userid";
+    public static final String TEST_PASSWORD_DB = "BCryptPasswordEncoder";
+    public static final String TEST_PASSWORD_RAW = "BCryptPasswordEncoder";
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,27 +38,14 @@ public class WebConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
-                .defaultSuccessUrl("/", true)
-                .permitAll()
+                .httpBasic()
                 .and()
-                .logout()
-                .permitAll()
-                .and()
-                    .rememberMe()
-                .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder);
     }
 }
