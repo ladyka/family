@@ -267,3 +267,40 @@ databaseChangeLog:
             name: description
             type: TEXT
         tableName: persons
+
+- changeSet:
+    id: 2021-08-18-creat-marriages
+    author: Eugene Kulik
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+            name: marrige_id
+            type: BIGINT
+        - column:
+            name: husband_id
+            type: BIGINT
+        - column:
+            name: wife_id
+            type: BIGINT
+        - column:
+            name: registration
+            type: DATE
+        - column:
+            name: divorce
+            type: DATE
+        - column:
+            name: marriage_type
+            type: VARCHAR(255)
+        tableName: marriges
+
+- changeSet:
+    id: 2021-08-18-copy-
+    author: Eugene Kulik
+    changes:
+    - sql:
+        endDelimiter: \nGO
+        sql: INSERT INTO marriges(husband_id, wife_id) SELECT parent_id, child_id FROM person_relation WHERE relation = 1;
