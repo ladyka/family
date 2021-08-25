@@ -6,13 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface MarriageRepository extends JpaRepository<Marriage, Long> {
-    Optional<List<Marriage>> findAllByWife(Person wife);
+    List<Marriage> findAllByWife(Person wife);
 
-    Optional<List<Marriage>> findAllByHusband(Person husband);
+    List<Marriage> findAllByHusband(Person husband);
 
-    Optional<List<Marriage>> findByHusbandIdEqualsOrWifeIdEquals(Long personId1, Long personId2);
+    List<Marriage> findByHusbandIdEqualsOrWifeIdEquals(Long husbandId, Long wifeId);
 }

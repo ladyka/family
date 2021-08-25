@@ -20,7 +20,7 @@ class Marriages {
                 wife: properties.wife,
                 registration: properties.registration ?: LocalDate.now(),
                 divorce: properties.divorce,
-                marriageType: MarriageType.CIVIL_MARRIAGE))
+                marriageType: properties.marriageType ?: MarriageType.CIVIL_MARRIAGE))
         bundle
     }
 }

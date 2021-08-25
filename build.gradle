@@ -7,7 +7,7 @@ plugins {
 
 group = 'by.ladyka'
 version = '0.0.2'
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_9
 
 configurations {
     compileOnly {
@@ -20,6 +20,10 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -42,3 +46,4 @@ dependencies {
 test {
     systemProperty 'spring.profiles.active', 'test'
 }
+targetCompatibility = JavaVersion.VERSION_1_9

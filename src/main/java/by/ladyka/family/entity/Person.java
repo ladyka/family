@@ -43,6 +43,10 @@ public class Person implements BaseEntity<Long> {
     private List<PersonRelation> relationsParent = new ArrayList<>();
     @OneToMany(mappedBy = "child")
     private List<PersonRelation> relationsChild = new ArrayList<>();
+    @OneToMany(mappedBy = "husband")
+    private List<Marriage> marriagesAsHusband;
+    @OneToMany(mappedBy = "wife")
+    private List<Marriage> marriagesAsWife;
 
     @ManyToMany(mappedBy = "persons")
     private List<Photo> photos = new ArrayList<>();
@@ -55,10 +59,21 @@ public class Person implements BaseEntity<Long> {
         return !gender;
     }
 
+    public List<Marriage> getMarriages() {
+        return isMan()
+               ? marriagesAsHusband
+               : marriagesAsWife;
+
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Person person = (Person) o;
         return id.equals(person.id)
                 && Objects.equals(name, person.name)

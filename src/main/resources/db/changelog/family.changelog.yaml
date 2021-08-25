@@ -298,9 +298,12 @@ databaseChangeLog:
         tableName: marriges
 
 - changeSet:
-    id: 2021-08-18-copy-
+    id: 2021-08-18-copy-from-person_relation-marriage-relations-to-marriges-and-delete-their-in-person_relation
     author: Eugene Kulik
     changes:
     - sql:
         endDelimiter: \nGO
         sql: INSERT INTO marriges(husband_id, wife_id) SELECT parent_id, child_id FROM person_relation WHERE relation = 1;
+    - sql:
+        endDelimiter: \nGO
+        sql: DELETE FROM person_relation WHERE relation = 1;

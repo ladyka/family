@@ -1,11 +1,15 @@
 package by.ladyka.family.api
 
 import by.ladyka.family.BaseWebTest
+import by.ladyka.family.data.Marriages
 import by.ladyka.family.data.PersonRelations
 import by.ladyka.family.data.Persons
 import by.ladyka.family.dto.PersonPage
+import by.ladyka.family.entity.MarriageType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
+
+import java.time.LocalDate
 
 class FamilyApiControllerTest extends BaseWebTest {
     @Autowired
@@ -13,20 +17,26 @@ class FamilyApiControllerTest extends BaseWebTest {
 
     @Autowired
     PersonRelations personRelations
+    @Autowired
+    Marriages marriages
 
     def "GetById"() {
         given:
-        def parents = personRelations.createCoupleHusbandAndWife()
+        def father = persons.create(name: "Husband")
+        def mother = persons.create(name: "Wife", gender: false)
 
         def man = persons.create(name: "Man")
         def secondWife = persons.create(name: "Wife2", gender: false)
-        def relationManWithSecondWife = personRelations.createCoupleHusbandAndWife(
-                parent: man.entity, child: secondWife.entity)
 
-        def fatherAndChild = personRelations.create(parent: parents.entity.parent,
+
+        def relationManWithSecondWife = marriages.create(husband: man.entity, wife: secondWife.entity,
+                registration: LocalDate.now().minusYears(5L),
+                marriageType: MarriageType.OFFICIAL)
+
+        def fatherAndChild = personRelations.create(parent: father.entity,
                 child: man.entity)
 
-        def motherAndChild = personRelations.create(parent: parents.entity.child,
+        def motherAndChild = personRelations.create(parent: mother.entity,
                 child: man.entity)
 
         def mansSun = persons.create(name: "firsSun", fathername: man.entity.name + "ovich")
@@ -35,30 +45,32 @@ class FamilyApiControllerTest extends BaseWebTest {
                 child: mansSun.entity)
 
         def mansWifeRelationWithSun = personRelations.create(
-                parent: relationManWithSecondWife.entity.child,
+                parent: secondWife.entity,
                 child: mansSun.entity)
 
 
         def newHusband = persons.create(name: "hewHusbandSecindWife", fathername: "fathername4NewHusband", surname: "Newman")
         def firstWife = persons.create(name: "Wife1", surname: "Surname4FirstWife", gender: false)
-        def relationFirstWifeAndHerNewHusband = personRelations.createCoupleHusbandAndWife(
-                parent: newHusband.entity,
-                child: firstWife.entity)
 
-        def relationManWithFirstWife = personRelations.createCoupleHusbandAndWife(
-                parent: man.entity,
-                child: relationFirstWifeAndHerNewHusband.entity.child)
+        def relationFirstWifeAndHerNewHusband = marriages.create(husband: newHusband.entity, wife: firstWife.entity,
+                registration: LocalDate.now().minusYears(6L),
+                marriageType: MarriageType.OFFICIAL)
+
+        def relationManWithFirstWife = marriages.create(husband: man.entity, wife: firstWife.entity,
+                registration: LocalDate.now().minusYears(7L),
+                divorce: LocalDate.now().minusYears(6L),
+                marriageType: MarriageType.OFFICIAL)
 
         def childFromFirstWife = persons.create(name: "FirsChild-daughter",
                 fathername: man.entity.name + "ovna",
-                surname: relationManWithFirstWife.entity.child.surname, gender: false)
+                surname: firstWife.entity.surname, gender: false)
 
         def relationFirstDaughter4Man = personRelations.create(
                 parent: man.entity,
                 child: childFromFirstWife.entity)
 
         def relationFirstDaughter4ManAndHerMather = personRelations.create(
-                parent: relationFirstWifeAndHerNewHusband.entity.child, child: childFromFirstWife.entity)
+                parent: firstWife.entity, child: childFromFirstWife.entity)
 
 //        def newHusbandsSun = persons.create(name: "Ashot",
 //                fathername: relationFirstWifeAndHerNewHusband.entity.parent.name + "vish",
@@ -87,17 +99,17 @@ class FamilyApiControllerTest extends BaseWebTest {
         personDto.phone == man.entity.phone
         personDto.wikilink == man.entity.wikilink
 
-        def father = responseEntity.body.father
-        father.id == parents.entity.parent.id
-        father.name == parents.entity.parent.name
-        father.surname == parents.entity.parent.surname
-        father.fathername == parents.entity.parent.fathername
+        def father4Man = responseEntity.body.father
+        father4Man.id == father.entity.id
+        father4Man.name == father.entity.name
+        father4Man.surname == father.entity.surname
+        father4Man.fathername == father.entity.fathername
 
-        def mother = responseEntity.body.mother
-        mother.id == parents.entity.child.id
-        mother.name == parents.entity.child.name
-        mother.surname == parents.entity.child.surname
-        mother.fathername == parents.entity.child.fathername
+        def mother4Man = responseEntity.body.mother
+        mother4Man.id == mother.entity.id
+        mother4Man.name == mother.entity.name
+        mother4Man.surname == mother.entity.surname
+        mother4Man.fathername == mother.entity.fathername
 
 
         def partnerAndChildren = responseEntity.body.partnerAndChildren
@@ -130,6 +142,7 @@ class FamilyApiControllerTest extends BaseWebTest {
         delete relationManWithSecondWife
         delete secondWife
         delete man
-        delete parents
+        delete mother
+        delete father
     }
 }

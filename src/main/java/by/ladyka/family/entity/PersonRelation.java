@@ -26,7 +26,4 @@ public class PersonRelation implements BaseEntity<Long> {
     @ManyToOne
     private Person child;
 
-    private RelationType relation;
-
-
 }

@@ -20,21 +20,19 @@ public class MarriageService {
     private final PersonService personService;
 
     public List<Person> getHusbands(Person wife) {
-        return marriageRepository.findAllByWife(wife).orElseThrow(() -> new NoSuchElementException("не была замужем")).stream()
+        return marriageRepository.findAllByWife(wife).stream()
                 .map(Marriage::getHusband)
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWifes(Person husband) {
-        return marriageRepository.findAllByHusband(husband).orElseThrow(() -> new NoSuchElementException("холост")).stream()
+        return marriageRepository.findAllByHusband(husband).stream()
                 .map(Marriage::getWife)
                 .collect(Collectors.toList());
     }
 
     public List<MarriageDto> findAllMarriages(Long personId) {
-        List<Marriage> marriages = marriageRepository.findByHusbandIdEqualsOrWifeIdEquals(personId, personId)
-                .orElseThrow(
-                        () -> new NoSuchElementException("не обнаружено бракосочетаний"));
+        List<Marriage> marriages = marriageRepository.findByHusbandIdEqualsOrWifeIdEquals(personId, personId);
         return marriages.stream().map(marriageMapper::toDto).collect(Collectors.toList());
     }
 

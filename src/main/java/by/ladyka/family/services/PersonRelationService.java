@@ -2,7 +2,6 @@ package by.ladyka.family.services;
 
 import by.ladyka.family.entity.Person;
 import by.ladyka.family.entity.PersonRelation;
-import by.ladyka.family.entity.RelationType;
 import by.ladyka.family.repositories.PersonRelationRepository;
 import by.ladyka.family.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,51 +19,34 @@ public class PersonRelationService {
     private final PersonRepository personRepository;
 
 
-    public void createRelation(Long id1, Long id2, RelationType relation) {
+    public void createRelation(Long id1, Long id2) {
         PersonRelation personRelation = new PersonRelation();
 
         Person two = this.personRepository.getOne(id2);
         Person one = this.personRepository.getOne(id1);
 
-        if (RelationType.MARRIAGE.equals(relation)) {
-            if (one.getGender().compareTo(two.getGender()) > 0) {
-                personRelation.setParent(one);
-                personRelation.setChild(two);
-            } else {
-                personRelation.setParent(two);
-                personRelation.setChild(one);
-            }
-        } else if (two.getBirthday().compareTo(one.getBirthday()) > 0) {
+        if (two.getBirthday().compareTo(one.getBirthday()) > 0) {
             personRelation.setParent(one);
             personRelation.setChild(two);
         } else {
             personRelation.setParent(two);
             personRelation.setChild(one);
         }
-        personRelation.setRelation(relation);
         this.personRelationRepository.save(personRelation);
     }
 
     public List<Person> parentRelations(Long id) {
-        return getChildRelation(id, RelationType.PARENT_CHILD);
-    }
-
-    public List<Person> husbands(Long id) {
-        return getChildRelation(id, RelationType.MARRIAGE);
+        return getChildRelation(id);
     }
 
     public List<Person> childRelation(Long id) {
-        return geParentRelation(id, RelationType.PARENT_CHILD);
+        return geParentRelation(id);
     }
 
-    public List<Person> wives(Long id) {
-        return geParentRelation(id, RelationType.MARRIAGE);
-    }
-
-    private List<Person> geParentRelation(Long id, RelationType parentChild) {
+    private List<Person> geParentRelation(Long id) {
         Person person = this.personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person was not found"));
         List<Person> parentPersons = new ArrayList<>();
-        List<PersonRelation> parents = this.personRelationRepository.findAllByParentAndRelation(person, parentChild);
+        List<PersonRelation> parents = this.personRelationRepository.findAllByParent(person);
         for (PersonRelation p : parents) {
             Person parent = p.getChild();
             parentPersons.add(parent);
@@ -72,10 +54,10 @@ public class PersonRelationService {
         return parentPersons;
     }
 
-    private List<Person> getChildRelation(Long id, RelationType parentChild) {
+    private List<Person> getChildRelation(Long id) {
         Person person = this.personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person was not found"));
         List<Person> childPersons = new ArrayList<>();
-        List<PersonRelation> children = this.personRelationRepository.findAllByChildAndRelation(person, parentChild);
+        List<PersonRelation> children = this.personRelationRepository.findAllByChild(person);
         for (PersonRelation c : children) {
             Person child = c.getParent();
             childPersons.add(child);

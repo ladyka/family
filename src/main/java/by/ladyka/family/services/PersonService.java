@@ -1,6 +1,7 @@
 package by.ladyka.family.services;
 
 import by.ladyka.family.entity.Person;
+import by.ladyka.family.mappers.PersonMapper;
 import by.ladyka.family.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,13 @@ import java.util.List;
 public class PersonService {
 
     private final PersonRepository personRepository;
+    private final PersonMapper personMapper;
 
     public Person createOrUpdate(Long id, String name, String surname, String fathername,
-                                 LocalDateTime birthday, LocalDateTime deadDay, boolean gender) {
-        Person person = (id != null) ? personRepository.getOne(id) : new Person();
+            LocalDateTime birthday, LocalDateTime deadDay, boolean gender) {
+        Person person = (id != null)
+                        ? personRepository.getOne(id)
+                        : new Person();
         person.setName(name);
         person.setSurname(surname);
         person.setFathername(fathername);
@@ -26,6 +30,10 @@ public class PersonService {
         person.setGender(gender);
         return this.personRepository.save(person);
     }
+    //    public PersonDto create(PersonDto personDto) {
+    //        Person person = personRepository.save(personMapper.toEntity(new Person(), personDto));
+    //        return personMapper.toDto(person);
+    //    }
 
     public List<Person> findAll() {
         return this.personRepository.findAll();

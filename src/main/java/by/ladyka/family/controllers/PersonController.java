@@ -3,7 +3,7 @@ package by.ladyka.family.controllers;
 import by.ladyka.family.entity.Person;
 import by.ladyka.family.entity.PersonRelation;
 import by.ladyka.family.entity.Photo;
-import by.ladyka.family.entity.RelationType;
+import by.ladyka.family.services.MarriageService;
 import by.ladyka.family.services.PersonRelationService;
 import by.ladyka.family.services.PersonService;
 import by.ladyka.family.services.PhotoService;
@@ -28,6 +28,7 @@ public class PersonController {
     private final PersonService personService;
     private final PersonRelationService personRelationService;
     private final PhotoService photoService;
+    private final MarriageService marriageService;
 
     @RequestMapping(value = "/", method = GET)
     public String persons(Model model) {
@@ -61,7 +62,6 @@ public class PersonController {
                          boolean gender,
                          String birthday,
                          String deadDay,
-                         int relationType,
                          Long personRelationId,
                          Model model) {
         LocalDateTime deadday = null;
@@ -69,7 +69,7 @@ public class PersonController {
             deadday = LocalDateTime.parse(deadDay);
         }
         Person person = this.personService.createOrUpdate(id, name, surname, fathername, LocalDateTime.parse(birthday), deadday, gender);
-        this.personRelationService.createRelation(personRelationId, person.getId(), RelationType.of(relationType));
+        this.personRelationService.createRelation(personRelationId, person.getId());
         return getById(person.getId(), model);
     }
 
@@ -77,8 +77,8 @@ public class PersonController {
     public String getById(@PathVariable Long id, Model model) {
         Person person = this.personService.findById(id);
 
-        List<Person> husbands = this.personRelationService.husbands(person.getId());
-        List<Person> wives = this.personRelationService.wives(person.getId());
+        List<Person> husbands = marriageService.getHusbands(person);
+        List<Person> wifes = marriageService.getWifes(person);
         List<Person> parents = this.personRelationService.parentRelations(person.getId());
         List<Person> children = this.personRelationService.childRelation(person.getId());
 
@@ -94,7 +94,7 @@ public class PersonController {
         model.addAttribute("parents", parents);
         model.addAttribute("children", children);
         model.addAttribute("husbands", husbands);
-        model.addAttribute("wives", wives);
+        model.addAttribute("wives", wifes);
         model.addAttribute("brothersAndSisters", brothersAndSisters);
 
         model.addAttribute("persons", this.personService.findAll());
@@ -112,8 +112,8 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/relation", method = POST)
-    public String createRelation(Long personId, Long relationId, int relationType, Model model) {
-        this.personRelationService.createRelation(personId, relationId, RelationType.of(relationType));
+    public String createRelation(Long personId, Long relationId, Model model) {
+        this.personRelationService.createRelation(personId, relationId);
         return getById(personId, model);
     }
 

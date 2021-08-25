@@ -7,7 +7,7 @@ import by.ladyka.family.dto.PersonPage;
 import by.ladyka.family.dto.PersonParentDto;
 import by.ladyka.family.entity.Person;
 import by.ladyka.family.entity.PersonRelation;
-import by.ladyka.family.entity.RelationType;
+import by.ladyka.family.services.MarriageService;
 import by.ladyka.family.services.PersonRelationService;
 import by.ladyka.family.services.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,7 @@ public class FamilyApiController {
 
     private final PersonService personService;
     private final PersonRelationService personRelationService;
+    private final MarriageService marriageService;
 
     @RequestMapping(value = "/person/{id}", method = GET)
     public PersonPage getById(@PathVariable Long id, Principal principal) {
@@ -57,23 +58,22 @@ public class FamilyApiController {
                 .map(Person::getRelationsParent)
                 .flatMap(personRelations -> personRelations
                         .stream()
-                        .filter(personRelation -> RelationType.PARENT_CHILD.equals(personRelation.getRelation()))
+                        //                        .filter(personRelation -> RelationType.PARENT_CHILD.equals(personRelation.getRelation()))
                         .map(PersonRelation::getChild))
                 .collect(Collectors.toSet());
 
         brothersAndSisters.remove(person);
         personPage.setBrothersAndSisters(brothersAndSisters
-                .stream()
-                .map(p -> new PersonDto(p, FamilyRole.BROTHER_SISTER))
-                .collect(Collectors.toList())
-        );
-
-        List<Person> husbands = this.personRelationService.husbands(person.getId());
-        List<Person> wives = this.personRelationService.wives(person.getId());
+                        .stream()
+                        .map(p -> new PersonDto(p, FamilyRole.BROTHER_SISTER))
+                        .collect(Collectors.toList())
+                                        );
+        List<Person> wifes = marriageService.getWifes(person);
+        List<Person> husbands = marriageService.getHusbands(person);
 
         List<Person> partners = new ArrayList<>();
         partners.addAll(husbands);
-        partners.addAll(wives);
+        partners.addAll(wifes);
         partners.forEach(partner -> {
             PartnerAndChildren partnerAndChildren = new PartnerAndChildren();
             partnerAndChildren.setPartner(new PersonDto(partner, FamilyRole.HUSBAND_WIFE));
