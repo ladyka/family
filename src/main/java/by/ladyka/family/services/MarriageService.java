@@ -1,7 +1,6 @@
 package by.ladyka.family.services;
 
 import by.ladyka.family.dto.MarriageDto;
-import by.ladyka.family.dto.PersonDto;
 import by.ladyka.family.entity.Marriage;
 import by.ladyka.family.entity.Person;
 import by.ladyka.family.mappers.MarriageMapper;
@@ -32,10 +31,23 @@ public class MarriageService {
                 .collect(Collectors.toList());
     }
 
-    public MarriageDto create(MarriageDto marriageDto, PersonDto husbandDto, PersonDto wifeDto) {
-        PersonDto husband = personService.create(husbandDto);
-        PersonDto wife = personService.create(wifeDto);
+    public List<MarriageDto> findAllMarriages(Long personId) {
+        List<Marriage> marriages = marriageRepository.findByHusbandIdEqualsOrWifeIdEquals(personId, personId)
+                .orElseThrow(
+                        () -> new NoSuchElementException("не обнаружено бракосочетаний"));
+        return marriages.stream().map(marriageMapper::toDto).collect(Collectors.toList());
+    }
+
+    public MarriageDto create(MarriageDto marriageDto) {
+        Person husband = personService.findById(marriageDto.getHusbandId());
+        Person wife = personService.findById(marriageDto.getWifeId());
         Marriage marriage = marriageRepository.save(marriageMapper.toEntity(new Marriage(), marriageDto, husband, wife));
         return marriageMapper.toDto(marriage);
+    }
+
+    public void update(Long marrigeId, MarriageDto dto) {
+        Marriage marriage = marriageRepository.findById(marrigeId).orElseThrow(NoSuchElementException::new);
+        Marriage updated = marriageMapper.toEntity(marriage, dto, marriage.getHusband(), marriage.getWife());
+        marriageRepository.save(updated);
     }
 }

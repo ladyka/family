@@ -13,4 +13,6 @@ public interface MarriageRepository extends JpaRepository<Marriage, Long> {
     Optional<List<Marriage>> findAllByWife(Person wife);
 
     Optional<List<Marriage>> findAllByHusband(Person husband);
+
+    Optional<List<Marriage>> findByHusbandIdEqualsOrWifeIdEquals(Long personId1, Long personId2);
 }

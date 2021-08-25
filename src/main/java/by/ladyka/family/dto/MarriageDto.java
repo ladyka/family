@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Setter
 public class MarriageDto {
     private Long id;
-    private PersonDto husband;
-    private PersonDto wife;
+    private Long husbandId;
+    private Long wifeId;
     private LocalDate registration;
     private LocalDate divorce;
     private MarriageType marriageType;
