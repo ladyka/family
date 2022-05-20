@@ -11,6 +11,7 @@ import by.ladyka.family.entity.RelationType;
 import by.ladyka.family.services.PersonRelationService;
 import by.ladyka.family.services.PersonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "https://treefamily-ui.herokuapp.com", allowCredentials = "true")
 public class FamilyApiController {
 
     private final PersonService personService;
