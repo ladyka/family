@@ -402,4 +402,4 @@ databaseChangeLog:
             name: last_modify_user
             type: VARCHAR
             remarks: "Идентификатор пользователя/клиента, который редактировал (включая добваление) запись"
-        tableName: marriage
+        tableName: children
