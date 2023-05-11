@@ -315,7 +315,7 @@ databaseChangeLog:
             remarks: "Дата окончания брака"
         - column:
             name: note
-            type: varchar
+            type: varchar(255)
             remarks: "Примечание"
         - column:
             constraints:
@@ -328,7 +328,7 @@ databaseChangeLog:
             constraints:
               nullable: false
             name: create_user
-            type: VARCHAR
+            type: VARCHAR(36)
             remarks: "Идентификатор пользователя/клиента, который добавлял запись"
         - column:
             constraints:
@@ -341,9 +341,15 @@ databaseChangeLog:
             constraints:
               nullable: false
             name: last_modify_user
-            type: VARCHAR
-            remarks: "Идентификатор пользователя/клиента, который редактировал (включая добавление) запись"
+            type: VARCHAR(36)
+            remarks: "Идентификатор пользователя/клиента, который редактировал (включая добваление) запись"
         tableName: marriage
+
+- changeSet:
+    id: 2023-05-11-marriage-data
+    author: Andrei Ladyka
+    changes:
+    - sql: insert into marriage (husband_id, wife_id, relation_start_date, start_date, end_date, note, create_user, last_modify_user) select parent_id as "husband_id", child_id as "wife_id", '1800-01-01' as relation_start_date, '1800-01-01' as start_date, null as end_date, '' as note, 'init' as create_user, 'init' as last_modify_user from person_relation where relation = 1
 
 - changeSet:
     id: 2023-05-11-children
@@ -374,7 +380,7 @@ databaseChangeLog:
             remarks: "идентификатор записи ребёнка"
         - column:
             name: note
-            type: varchar
+            type: varchar(255)
             remarks: "Примечание"
         - column:
             constraints:
@@ -387,7 +393,7 @@ databaseChangeLog:
             constraints:
               nullable: false
             name: create_user
-            type: VARCHAR
+            type: VARCHAR(36)
             remarks: "Идентификатор пользователя/клиента, который добавлял запись"
         - column:
             constraints:
@@ -400,6 +406,19 @@ databaseChangeLog:
             constraints:
               nullable: false
             name: last_modify_user
-            type: VARCHAR
+            type: VARCHAR(36)
             remarks: "Идентификатор пользователя/клиента, который редактировал (включая добваление) запись"
         tableName: children
+
+
+- changeSet:
+    id: 2023-05-11-children-husband-data
+    author: Andrei Ladyka
+    changes:
+    - sql: insert into children(marriage_id, child_id, note, create_user, last_modify_user) select m.id as marriage_id, pr.child_id::varchar as child_id, '' as note, 'migration' as create_user, 'migration' as last_modify_user from person_relation pr inner join marriage m on m.husband_id = pr.parent_id::varchar where relation = 0;
+
+- changeSet:
+    id: 2023-05-11-children-wife-data
+    author: Andrei Ladyka
+    changes:
+    - sql: insert into children(marriage_id, child_id, note, create_user, last_modify_user) select m.id as marriage_id, pr.child_id::varchar as child_id, '' as note, 'migration' as create_user, 'migration' as last_modify_user from person_relation pr inner join marriage m on m.wife_id    = pr.parent_id::varchar where relation = 0;
