@@ -313,4 +313,34 @@ databaseChangeLog:
             name: end_date
             type: date
             remarks: "Дата окончания брака"
+        - column:
+            name: note
+            type: varchar
+            remarks: "Примечание"
+        - column:
+            constraints:
+              nullable: false
+            name: create_time
+            type: BIGINT
+            defaultValueComputed: ${now}
+            remarks: "Unix-время добавления записи в таблицу"
+        - column:
+            constraints:
+              nullable: false
+            name: create_user
+            type: VARCHAR
+            remarks: "Идентификатор пользователя/клиента, который добавлял запись"
+        - column:
+            constraints:
+              nullable: false
+            name: last_modify_time
+            type: BIGINT
+            defaultValueComputed: ${now}
+            remarks: "Unix-время последней модификации записи"
+        - column:
+            constraints:
+              nullable: false
+            name: last_modify_user
+            type: VARCHAR
+            remarks: "Идентификатор пользователя/клиента, который редактировал (включая добваление) запись"
         tableName: marriage
