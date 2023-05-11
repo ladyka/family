@@ -320,6 +320,13 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValueNumeric: 0
+            name: version
+            type: smallint
+            remarks: "Версия"
+        - column:
+            constraints:
+              nullable: false
             name: create_time
             type: BIGINT
             defaultValueComputed: ${now}
@@ -349,7 +356,7 @@ databaseChangeLog:
     id: 2023-05-11-marriage-data
     author: Andrei Ladyka
     changes:
-    - sql: insert into marriage (husband_id, wife_id, relation_start_date, start_date, end_date, note, create_user, last_modify_user) select parent_id as "husband_id", child_id as "wife_id", '1800-01-01' as relation_start_date, '1800-01-01' as start_date, null as end_date, '' as note, 'init' as create_user, 'init' as last_modify_user from person_relation where relation = 1
+    - sql: insert into marriage (husband_id, wife_id, relation_start_date, start_date, end_date, note, create_user, last_modify_user) select parent_id as "husband_id", child_id as "wife_id", '1800-01-01' as relation_start_date, '1800-01-01' as start_date, null as end_date, '' as note,  'migration' as create_user,  'migration' as last_modify_user from person_relation where relation = 1
 
 - changeSet:
     id: 2023-05-11-children
@@ -382,6 +389,13 @@ databaseChangeLog:
             name: note
             type: varchar(255)
             remarks: "Примечание"
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: version
+            type: smallint
+            remarks: "Версия"
         - column:
             constraints:
               nullable: false
