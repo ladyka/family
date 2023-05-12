@@ -1,9 +1,6 @@
 package by.ladyka.family.data
 
 
-import by.ladyka.family.entity.PersonRelation
-import by.ladyka.family.entity.RelationType
-import by.ladyka.family.repositories.PersonRelationRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

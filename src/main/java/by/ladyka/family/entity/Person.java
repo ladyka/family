@@ -39,10 +39,12 @@ public class Person implements BaseEntity<Long> {
 
     private String username;
 
-    @OneToMany(mappedBy = "parent")
-    private List<PersonRelation> relationsParent = new ArrayList<>();
+    @OneToMany(mappedBy = "husband")
+    private List<MarriageEntity> husbands = new ArrayList<>();
+    @OneToMany(mappedBy = "wife")
+    private List<MarriageEntity> wives = new ArrayList<>();
     @OneToMany(mappedBy = "child")
-    private List<PersonRelation> relationsChild = new ArrayList<>();
+    private List<ChildrenEntity> children = new ArrayList<>();
 
     @ManyToMany(mappedBy = "persons")
     private List<Photo> photos = new ArrayList<>();
