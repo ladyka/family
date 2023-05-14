@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -39,10 +41,18 @@ public class Person implements BaseEntity<Long> {
 
     private String username;
 
-    @OneToMany(mappedBy = "parent")
-    private List<PersonRelation> relationsParent = new ArrayList<>();
-    @OneToMany(mappedBy = "child")
-    private List<PersonRelation> relationsChild = new ArrayList<>();
+    //Браки в которых данный человек выступает в роли жены
+    @OneToMany(mappedBy = "husband")
+    private List<MarriageEntity> husbands = new ArrayList<>();
+
+    //Браки в которых данный человек выступает в роли мужа
+    @OneToMany(mappedBy = "wife")
+    private List<MarriageEntity> wives = new ArrayList<>();
+
+    //Это брак в котором создан данный человек.
+    @JoinColumn(name = "marriage_id")
+    @ManyToOne
+    private MarriageEntity marriage;
 
     @ManyToMany(mappedBy = "persons")
     private List<Photo> photos = new ArrayList<>();

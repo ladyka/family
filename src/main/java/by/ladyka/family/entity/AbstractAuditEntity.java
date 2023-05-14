@@ -28,5 +28,7 @@ public abstract class AbstractAuditEntity {
     private Instant lastModifiedDate;
     @Version
     @Column(name = "version")
-    private Long version;
+    private Short version;
+
+    private String note;
 }

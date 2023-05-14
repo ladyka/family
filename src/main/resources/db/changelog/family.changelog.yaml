@@ -267,3 +267,121 @@ databaseChangeLog:
             name: description
             type: TEXT
         tableName: persons
+
+- changeSet:
+    id: 2023-05-11-marriage
+    author: Andrei Ladyka
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: marriage_pkey
+            name: id
+            type: VARCHAR(36)
+            defaultValueComputed: ${uuid}
+            remarks: "идентификатор записи marriage"
+        - column:
+            constraints:
+              nullable: true
+            name: husband_id
+            type: BIGINT
+            remarks: "идентификатор записи муж"
+        - column:
+            constraints:
+              nullable: true
+            name: wife_id
+            type: BIGINT
+            remarks: "идентификатор записи жена"
+        - column:
+            constraints:
+              nullable: false
+            name: relation_start_date
+            type: date
+            remarks: "Дата начала отношений"
+        - column:
+            constraints:
+              nullable: false
+            name: start_date
+            type: date
+            remarks: "Дата начала брака"
+        - column:
+            constraints:
+              nullable: true
+            name: end_date
+            type: date
+            remarks: "Дата окончания брака"
+        - column:
+            name: note
+            type: varchar(255)
+            remarks: "Примечание"
+        - column:
+            constraints:
+              nullable: false
+            defaultValueNumeric: 0
+            name: version
+            type: smallint
+            remarks: "Версия"
+        - column:
+            constraints:
+              nullable: false
+            name: create_time
+            type: BIGINT
+            defaultValueComputed: ${now}
+            remarks: "Unix-время добавления записи в таблицу"
+        - column:
+            constraints:
+              nullable: false
+            name: create_user
+            type: VARCHAR(36)
+            remarks: "Идентификатор пользователя/клиента, который добавлял запись"
+        - column:
+            constraints:
+              nullable: false
+            name: last_modify_time
+            type: BIGINT
+            defaultValueComputed: ${now}
+            remarks: "Unix-время последней модификации записи"
+        - column:
+            constraints:
+              nullable: false
+            name: last_modify_user
+            type: VARCHAR(36)
+            remarks: "Идентификатор пользователя/клиента, который редактировал (включая добваление) запись"
+        tableName: marriage
+
+- changeSet:
+    id: 2023-05-11-marriage-data
+    author: Andrei Ladyka
+    changes:
+    - sql: insert into marriage (husband_id, wife_id, relation_start_date, start_date, end_date, note, create_user, last_modify_user) select parent_id as "husband_id", child_id as "wife_id", '1800-01-01' as relation_start_date, '1800-01-01' as start_date, null as end_date, '' as note,  'liquibase' as create_user,  'liquibase' as last_modify_user from person_relation where relation = 1
+
+- changeSet:
+    id: 2023-05-11-children
+    author: Andrei Ladyka
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: marriage_id
+            type: VARCHAR(36)
+        tableName: persons
+
+- changeSet:
+    id: 2023-05-11-persons-children-relations-data
+    author: Andrei Ladyka
+    changes:
+    - sql: CREATE TABLE tmp_relations (  child_id bigint,  max_parent_id bigint,  min_parent_id bigint,  check_str text  );
+    - sql: insert into tmp_relations  select pr.child_id, max(pr.parent_id), min(pr.parent_id), array_agg(pr.parent_id::text)  from person_relation pr  where relation = 0  group by child_id;
+    - sql: update persons  set  wikilink = check_str,  email = max_parent_id::varchar,  phone = min_parent_id::varchar  from tmp_relations pr where persons.id = pr.child_id
+    - sql: drop table tmp_relations;
+
+#- changeSet:
+#    id: 2023-05-11-person_relation-drop
+#    author: Andrei Ladyka
+#    changes:
+#    - dropTable:
+#        cascadeConstraints: true
+#        tableName: person_relation

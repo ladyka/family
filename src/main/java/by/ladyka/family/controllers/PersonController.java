@@ -1,7 +1,6 @@
 package by.ladyka.family.controllers;
 
 import by.ladyka.family.entity.Person;
-import by.ladyka.family.entity.PersonRelation;
 import by.ladyka.family.entity.Photo;
 import by.ladyka.family.entity.RelationType;
 import by.ladyka.family.services.PersonRelationService;
@@ -16,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -77,18 +77,30 @@ public class PersonController {
     public String getById(@PathVariable Long id, Model model) {
         Person person = this.personService.findById(id);
 
-        List<Person> husbands = this.personRelationService.husbands(person.getId());
-        List<Person> wives = this.personRelationService.wives(person.getId());
-        List<Person> parents = this.personRelationService.parentRelations(person.getId());
-        List<Person> children = this.personRelationService.childRelation(person.getId());
+        List<Person> husbands = this.personRelationService.husbands(person);
+        List<Person> wives = this.personRelationService.wives(person);
 
-        List<Person> brothersAndSisters = parents
-                .stream()
-                .map(Person::getRelationsParent)
-                .flatMap(personRelations -> personRelations.stream().map(PersonRelation::getChild))
-                .collect(Collectors.toList());
+        List<Person> parents = new ArrayList<>();
+        List<Person> brothersAndSisters = new ArrayList<>();
 
+        Optional<Person> f = this.personRelationService.getFather(person);
+        f.ifPresent(father -> {
+            parents.add(father);
+
+            List<Person> children = personRelationService.getChildren(father);
+            brothersAndSisters.addAll(children);
+        });
+
+        Optional<Person> m = this.personRelationService.getMother(person);
+        m.ifPresent(mother -> {
+            parents.add(mother);
+
+            List<Person> children = personRelationService.getChildren(mother);
+            brothersAndSisters.addAll(children);
+        });
         brothersAndSisters.remove(person);
+
+        List<Person> children = this.personRelationService.getChildren(person);
 
         model.addAttribute("person", person);
         model.addAttribute("parents", parents);
