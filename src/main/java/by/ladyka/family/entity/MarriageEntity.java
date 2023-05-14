@@ -33,5 +33,5 @@ public class MarriageEntity extends AbstractAuditEntity implements BaseEntity<St
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "marriage")
-    private List<ChildrenEntity> children = new ArrayList<>();
+    private List<Person> children = new ArrayList<>();
 }

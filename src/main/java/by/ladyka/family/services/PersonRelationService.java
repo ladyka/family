@@ -1,10 +1,8 @@
 package by.ladyka.family.services;
 
-import by.ladyka.family.entity.ChildrenEntity;
 import by.ladyka.family.entity.MarriageEntity;
 import by.ladyka.family.entity.Person;
 import by.ladyka.family.entity.RelationType;
-import by.ladyka.family.repositories.ChildrenRepository;
 import by.ladyka.family.repositories.MarriageRepository;
 import by.ladyka.family.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,6 @@ import java.util.stream.Collectors;
 public class PersonRelationService {
 
     private final MarriageRepository marriageRepository;
-    private final ChildrenRepository childrenRepository;
     private final PersonRepository personRepository;
 
     public void createRelation(Long id1, Long id2, RelationType relation) {
@@ -38,7 +35,6 @@ public class PersonRelationService {
             }
             marriageRepository.save(marriageEntity);
         } else {
-            ChildrenEntity childrenEntity = new ChildrenEntity();
             if (two.getBirthday().isAfter(one.getBirthday())) {
                 MarriageEntity marriage;
                 if (one.getGender()) {
@@ -46,8 +42,8 @@ public class PersonRelationService {
                 } else {
                     marriage = marriageRepository.findByWife(one).get(0);
                 }
-                childrenEntity.setMarriage(marriage);
-                childrenEntity.setChild(two);
+                two.setMarriage(marriage);
+                personRepository.save(two);
             } else {
                 MarriageEntity marriage;
                 if (two.getGender()) {
@@ -55,10 +51,9 @@ public class PersonRelationService {
                 } else {
                     marriage = marriageRepository.findByWife(two).get(0);
                 }
-                childrenEntity.setMarriage(marriage);
-                childrenEntity.setChild(one);
+                one.setMarriage(marriage);
+                personRepository.save(one);
             }
-            childrenRepository.save(childrenEntity);
         }
     }
 
@@ -77,24 +72,21 @@ public class PersonRelationService {
     }
 
     public Optional<Person> getFather(Person me) {
-        return childrenRepository
-                .findByChild(me)
-                .map(ChildrenEntity::getMarriage)
+        return Optional.of(me)
+                .map(Person::getMarriage)
                 .map(MarriageEntity::getHusband);
     }
 
     public Optional<Person> getMother(Person me) {
-        return childrenRepository
-                .findByChild(me)
-                .map(ChildrenEntity::getMarriage)
+        return Optional.of(me)
+                .map(Person::getMarriage)
                 .map(MarriageEntity::getWife);
     }
 
     public List<Person> getChildren(Person husband, Person wife) {
-        List<ChildrenEntity> childrenEntities = marriageRepository.findByHusbandAndWife(husband, wife)
+        return marriageRepository.findByHusbandAndWife(husband, wife)
                 .map(MarriageEntity::getChildren)
                 .orElse(new ArrayList<>());
-        return childrenEntities.stream().map(ChildrenEntity::getChild).collect(Collectors.toList());
     }
 
     public List<Person> getChildren(Person person) {
@@ -107,7 +99,6 @@ public class PersonRelationService {
         return marriages.stream()
                 .map(MarriageEntity::getChildren)
                 .flatMap(List::stream)
-                .map(ChildrenEntity::getChild)
                 .collect(Collectors.toList());
     }
 }
